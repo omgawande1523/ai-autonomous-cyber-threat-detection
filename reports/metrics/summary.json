@@ -1,0 +1,18 @@
+{
+    "best_anomaly_detector": "lstm_autoencoder",
+    "best_anomaly_f1": 0.45601291364003227,
+    "best_anomaly_auc": 0.7272830453473355,
+    "best_classifier": "xgboost",
+    "best_classifier_f1": 0.9988856316680048,
+    "best_classifier_auc": 0.9999649391768767,
+    "best_classifier_latency_ms": 0.0024712350633409284,
+    "dataset_rows": 15000,
+    "train_shape": [
+        10500,
+        77
+    ],
+    "test_shape": [
+        4500,
+        77
+    ]
+}
