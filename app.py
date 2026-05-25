@@ -96,7 +96,7 @@ st.markdown("""
         box-shadow: 0 0 10px rgba(88, 166, 255, 0.6);
     }
 </style>
-""", unsafe_style_html=True)
+""", unsafe_allow_html=True)
 
 # Cache model loading to optimize dashboard updates
 @st.cache_resource
@@ -245,7 +245,7 @@ st.markdown("""
     <h1 style="margin: 0; display: inline-block;">🛡️ SOC Command Center</h1>
     <span style="float: right; font-family: monospace; color: #8b949e; padding-top: 10px;">AI-Powered Autonomous Threat Detection & Response</span>
 </div>
-""", unsafe_style_html=True)
+""", unsafe_allow_html=True)
 
 # ----------------- SIDEBAR CONTROLS -----------------
 st.sidebar.markdown("### 🎛️ SYSTEM CONTROLS")
@@ -369,7 +369,7 @@ with tab_live:
                     <b>Severity:</b> {item['severity']} | <b>Anomaly Score:</b> {item['anomaly_score']:.5f}<br/>
                     <b>Confidence:</b> {item['confidence']*100:.1f}% | <b>Action Mitigated:</b> <code style="color:#58a6ff;">{item['mitigation']}</code>
                 </div>
-                """, unsafe_style_html=True)
+                """, unsafe_allow_html=True)
         else:
             st.info("Waiting for network flows to be parsed...")
 
