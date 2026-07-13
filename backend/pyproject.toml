@@ -5,33 +5,10 @@ description = "AI Autonomous Cyber Threat Detection Backend"
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
-    "torch",
-    "gymnasium",
-    "stable-baselines3",
-    "scikit-learn",
-    "xgboost",
-    "pandas",
     "numpy",
+    "pandas",
     "scapy",
     "pyshark",
     "fastapi",
     "uvicorn",
-    "shap",
-    "numba>=0.59.0",
-    "llvmlite>=0.42.0",
-    "captum",
-    "streamlit",
-    "plotly",
-    "matplotlib",
-    "seaborn",
-    "imbalanced-learn",
-    "tensorboard",
 ]
-
-[[tool.uv.index]]
-name = "pytorch-cpu"
-url = "https://download.pytorch.org/whl/cpu"
-explicit = true
-
-[tool.uv.sources]
-torch = { index = "pytorch-cpu" }
