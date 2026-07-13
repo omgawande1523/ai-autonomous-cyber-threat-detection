@@ -100,3 +100,19 @@ To provide trust and transparency, the dashboard features:
 ## 🔮 Future Scope
 1. **Network Flow Tracking**: Integrate high-performance native flow extractors (e.g. `nfstream`) to parse live PCAP streams into features.
 2. **OS Firewall Integrations**: Bridge RL mitigation decisions directly to active host firewalls (e.g., editing `iptables` or Windows Firewall rules).
+
+---
+
+## ⚡ Vercel Deployment (Frontend SOC Dashboard)
+
+The project includes a web-based **Enterprise SOC Command Center** dashboard located in the [frontend](file:///C:/Users/ASUS/.gemini/antigravity-ide/scratch/ai-autonomous-cyber-threat-detection/frontend) directory. It is fully compatible with Vercel deployment.
+
+### Step-by-Step Deployment
+1. Go to your [Vercel Dashboard](https://vercel.com) and click **Add New > Project**.
+2. Import this GitHub repository.
+3. In the **Configure Project** step, Vercel will automatically read the root-level [vercel.json](file:///C:/Users/ASUS/.gemini/antigravity-ide/scratch/ai-autonomous-cyber-threat-detection/vercel.json) to serve the static dashboard.
+4. Click **Deploy**. Vercel will deploy the interface and provide a live URL.
+5. *(Optional)* If you prefer to set the **Root Directory** explicitly:
+   * Edit settings and choose `frontend` as the root directory.
+   * Deploy.
+

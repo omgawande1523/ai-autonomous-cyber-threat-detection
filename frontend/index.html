@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SOC Command Center | AI Autonomous Cyber Threat Detection</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- Google Fonts: Inter & JetBrains Mono -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <!-- Chart.js for premium visualizations -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="app-container">
+        <!-- Top Status Bar -->
+        <header class="top-bar">
+            <div class="logo-title">
+                <span class="pulse-icon red"></span>
+                <h1>🛡️ SOC COMMAND CENTER</h1>
+            </div>
+            <div class="system-status">
+                <span class="status-badge active">SYSTEM LIVE</span>
+                <span class="engine-ver">MODEL: PPO-SB3.V2</span>
+            </div>
+        </header>
+
+        <div class="main-layout">
+            <!-- Sidebar Controls -->
+            <aside class="sidebar">
+                <div class="section-title">🎛️ SYSTEM CONTROLS</div>
+                
+                <div class="control-group">
+                    <label class="control-label">Sniffer Mode</label>
+                    <div class="radio-group">
+                        <label class="radio-option">
+                            <input type="radio" name="sniffer_mode" value="simulated" checked>
+                            <span>Simulated Stream</span>
+                        </label>
+                        <label class="radio-option">
+                            <input type="radio" name="sniffer_mode" value="live">
+                            <span>Live Network Sniffing</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="button-stack">
+                    <button id="start-btn" class="btn btn-primary">Start Threat Monitoring</button>
+                    <button id="stop-btn" class="btn btn-secondary" disabled>Stop Threat Monitoring</button>
+                </div>
+
+                <div class="divider"></div>
+
+                <div class="section-title">📋 ENGINE DETAILS</div>
+                <div class="engine-details-list">
+                    <div class="detail-item">
+                        <span class="detail-label">Anomaly Detector:</span>
+                        <span class="detail-val font-mono">LSTM Autoencoder</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">Anomaly Threshold:</span>
+                        <span class="detail-val font-mono">0.05284</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">Attack Classifier:</span>
+                        <span class="detail-val font-mono text-blue">XGBoost (Audited)</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">RL Mitigation Policy:</span>
+                        <span class="detail-val font-mono text-green">PPO RL Agent</span>
+                    </div>
+                </div>
+
+                <div class="divider"></div>
+
+                <div class="section-title">📈 SYSTEM METRICS</div>
+                <div class="sys-metrics-sidebar">
+                    <div class="progress-container">
+                        <div class="progress-label"><span>CPU Utilization</span><span id="cpu-pct">18%</span></div>
+                        <div class="progress-bar-bg"><div id="cpu-bar" class="progress-bar-fill green" style="width: 18%"></div></div>
+                    </div>
+                    <div class="progress-container">
+                        <div class="progress-label"><span>GPU VRAM</span><span id="vram-pct">4.2 GB</span></div>
+                        <div class="progress-bar-bg"><div id="vram-bar" class="progress-bar-fill blue" style="width: 35%"></div></div>
+                    </div>
+                    <div class="progress-container">
+                        <div class="progress-label"><span>Inference Latency</span><span id="latency-ms">0.82 ms</span></div>
+                        <div class="progress-bar-bg"><div id="latency-bar" class="progress-bar-fill green" style="width: 8%"></div></div>
+                    </div>
+                </div>
+            </aside>
+
+            <!-- Main Dashboard Area -->
+            <main class="content-area">
+                <!-- Navigation Tabs -->
+                <nav class="tab-navigation">
+                    <button class="tab-btn active" data-tab="live-ops">🟢 Live Ops Feed</button>
+                    <button class="tab-btn" data-tab="threat-sim">🧪 Threat Simulator</button>
+                    <button class="tab-btn" data-tab="model-gov">🧠 Model Governance & XAI</button>
+                    <button class="tab-btn" data-tab="audit-logs">📊 Reports & Audit Logs</button>
+                </nav>
+
+                <!-- TAB CONTENTS -->
+                
+                <!-- TAB 1: LIVE OPS FEED -->
+                <section id="live-ops" class="tab-content active">
+                    <!-- Metrics Row -->
+                    <div class="metrics-row">
+                        <div class="metric-card neon-border-blue">
+                            <div class="metric-title">TOTAL PACKETS ANALYZED</div>
+                            <div class="metric-value" id="metric-total">0</div>
+                            <div class="metric-sub text-blue" id="metric-rate">0 pkts/sec</div>
+                        </div>
+                        <div class="metric-card neon-border-red">
+                            <div class="metric-title">THREATS INTERCEPTED</div>
+                            <div class="metric-value text-red" id="metric-threats">0</div>
+                            <div class="metric-sub text-red" id="metric-threat-ratio">0.00% anomaly rate</div>
+                        </div>
+                        <div class="metric-card neon-border-yellow">
+                            <div class="metric-title">AVG ANOMALY SCORE</div>
+                            <div class="metric-value text-yellow" id="metric-anomaly">0.0142</div>
+                            <div class="metric-sub text-yellow">Threshold: 0.0528</div>
+                        </div>
+                        <div class="metric-card neon-border-green">
+                            <div class="metric-title">RL MITIGATION SUCCESS</div>
+                            <div class="metric-value text-green" id="metric-mitigated">100%</div>
+                            <div class="metric-sub text-green">Autonomous response active</div>
+                        </div>
+                    </div>
+
+                    <!-- Charts Grid -->
+                    <div class="dashboard-grid">
+                        <div class="grid-card lg">
+                            <div class="card-header">Anomaly Scoring vs Threshold (Real-Time)</div>
+                            <div class="chart-container">
+                                <canvas id="anomalyChart"></canvas>
+                            </div>
+                        </div>
+                        <div class="grid-card sm">
+                            <div class="card-header">Threat Class Distribution</div>
+                            <div class="chart-container">
+                                <canvas id="threatDistributionChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Event Log Registry -->
+                    <div class="event-log-card">
+                        <div class="card-header flex-header">
+                            <span>Threat Event Registry & Action Log</span>
+                            <button id="clear-log" class="btn btn-sm btn-secondary">Clear Logs</button>
+                        </div>
+                        <div class="table-wrapper">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>Timestamp</th>
+                                        <th>Anomaly Score</th>
+                                        <th>Status</th>
+                                        <th>Classification</th>
+                                        <th>Confidence</th>
+                                        <th>Severity</th>
+                                        <th>Mitigation Response (RL)</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="live-log-body">
+                                    <!-- Dynamic Rows -->
+                                    <tr class="empty-row">
+                                        <td colspan="7">Ready to scan. Please click 'Start Threat Monitoring' in the control panel.</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- TAB 2: THREAT SIMULATOR -->
+                <section id="threat-sim" class="tab-content">
+                    <div class="simulator-layout">
+                        <!-- Controls Card -->
+                        <div class="simulator-controls grid-card">
+                            <div class="card-header">Target Attack Injection Vector</div>
+                            
+                            <div class="sim-instructions">
+                                Select a simulated threat vector to inject payload packets into the network sniffer queue and view XGBoost classifications along with PPO agent mitigation actions.
+                            </div>
+
+                            <div class="sim-btn-grid">
+                                <button class="btn btn-sim btn-red" data-attack="ddos">DDoS Flood</button>
+                                <button class="btn btn-sim btn-red" data-attack="dos">DoS Hulk</button>
+                                <button class="btn btn-sim btn-yellow" data-attack="bot">Botnet Command</button>
+                                <button class="btn btn-sim btn-yellow" data-attack="infiltration">Infiltration Probe</button>
+                                <button class="btn btn-sim btn-blue" data-attack="portscan">Syn PortScan</button>
+                                <button class="btn btn-sim btn-blue" data-attack="bruteforce">SSH Brute Force</button>
+                                <button class="btn btn-sim btn-blue" data-attack="webattack">Web SQL Injection</button>
+                                <button class="btn btn-sim btn-green" data-attack="benign">Inject Benign Traffic</button>
+                            </div>
+
+                            <div class="divider"></div>
+
+                            <div class="custom-packet-form">
+                                <div class="form-title">Inject Custom Flow Feature Vector</div>
+                                <div class="form-grid">
+                                    <div class="form-field">
+                                        <label>Destination Port</label>
+                                        <input type="number" id="custom-port" value="80" class="form-input">
+                                    </div>
+                                    <div class="form-field">
+                                        <label>Flow Duration (ms)</label>
+                                        <input type="number" id="custom-duration" value="150" class="form-input">
+                                    </div>
+                                    <div class="form-field">
+                                        <label>Forward Packets/sec</label>
+                                        <input type="number" id="custom-rate" value="1000" class="form-input">
+                                    </div>
+                                    <div class="form-field">
+                                        <label>Average Packet Size</label>
+                                        <input type="number" id="custom-size" value="64" class="form-input">
+                                    </div>
+                                </div>
+                                <button id="inject-custom-btn" class="btn btn-primary btn-block">Inject Custom Feature Vector</button>
+                            </div>
+                        </div>
+
+                        <!-- Results Viewer -->
+                        <div class="simulator-viewer grid-card">
+                            <div class="card-header">Injected Anomaly & Mitigation Analysis</div>
+                            <div id="sim-result-placeholder" class="placeholder-msg">
+                                Select an attack above to execute the real-time classification pipeline.
+                            </div>
+                            
+                            <div id="sim-result-details" class="sim-result-details hidden">
+                                <div class="sim-verdict-card" id="sim-verdict">
+                                    <div class="verdict-label">CLASSIFICATION VERDICT</div>
+                                    <div class="verdict-value text-red" id="sim-attack-class">DDOS FLOOD</div>
+                                    <div class="verdict-desc" id="sim-attack-desc">Severe volume anomalous packet flow detected.</div>
+                                </div>
+
+                                <div class="results-stats">
+                                    <div class="result-stat-item">
+                                        <span class="stat-label">Anomaly Score:</span>
+                                        <span class="stat-val font-mono" id="sim-anomaly-score">0.24523</span>
+                                    </div>
+                                    <div class="result-stat-item">
+                                        <span class="stat-label">Confidence:</span>
+                                        <span class="stat-val font-mono" id="sim-confidence">99.85%</span>
+                                    </div>
+                                    <div class="result-stat-item">
+                                        <span class="stat-label">RL Mitigation:</span>
+                                        <span class="stat-val font-mono text-green" id="sim-mitigation">Block Source IP</span>
+                                    </div>
+                                </div>
+
+                                <div class="divider"></div>
+
+                                <div class="feature-importance-section">
+                                    <div class="sub-section-title">Local Feature Contributions (SHAP Values)</div>
+                                    <div class="shap-bar-chart" id="sim-shap-bars">
+                                        <!-- Dynamic bars -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- TAB 3: MODEL GOVERNANCE & XAI -->
+                <section id="model-gov" class="tab-content">
+                    <div class="model-gov-layout">
+                        <!-- Model Details Card -->
+                        <div class="grid-card">
+                            <div class="card-header">XLM-Autoencoder Anomaly Model Details</div>
+                            <div class="xai-text-block">
+                                The system utilizes a PyTorch Deep LSTM Autoencoder trained strictly on benign baseline network streams from the CICIDS2017 dataset. Packets exceeding a reconstruction mean squared error threshold are flagged for secondary threat categorization.
+                            </div>
+                            <div class="gov-metrics">
+                                <div class="gov-metric-item">
+                                    <span class="gov-label">Model Depth</span>
+                                    <span class="gov-val font-mono">5 Layers</span>
+                                </div>
+                                <div class="gov-metric-item">
+                                    <span class="gov-label">MSE Train Loss</span>
+                                    <span class="gov-val font-mono">0.00142</span>
+                                </div>
+                                <div class="gov-metric-item">
+                                    <span class="gov-label">AUC score</span>
+                                    <span class="gov-val font-mono">99.41%</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Global Feature Importance -->
+                        <div class="grid-card">
+                            <div class="card-header">Global Classifier Feature Importance (Top 10)</div>
+                            <div class="chart-container-large">
+                                <canvas id="globalImportanceChart"></canvas>
+                            </div>
+                        </div>
+
+                        <!-- Explainable AI Panel -->
+                        <div class="grid-card full-width">
+                            <div class="card-header">Feature Attribution Explainability Viewer</div>
+                            <div class="xai-interactive-panel">
+                                <div class="xai-header">
+                                    Hover over network flow features below to visualize attribution weights using **Captum (Integrated Gradients)** and **SHAP** attribution frameworks.
+                                </div>
+                                <div class="xai-features-grid" id="xai-features-wrapper">
+                                    <!-- Dynamic feature badges -->
+                                </div>
+                                <div class="xai-attribution-card" id="xai-attrib-card">
+                                    <div class="attrib-title" id="attrib-feature-name">Select a feature above</div>
+                                    <div class="attrib-desc" id="attrib-feature-desc">Hover to analyze contribution directionality.</div>
+                                    <div class="attrib-stats">
+                                        <div class="attrib-stat-box">
+                                            <div class="box-lbl">Captum IG Weight</div>
+                                            <div class="box-val text-blue font-mono" id="attrib-captum">+0.0000</div>
+                                        </div>
+                                        <div class="attrib-stat-box">
+                                            <div class="box-lbl">SHAP Coefficient</div>
+                                            <div class="box-val text-green font-mono" id="attrib-shap">+0.0000</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- TAB 4: REPORTS & AUDIT LOGS -->
+                <section id="audit-logs" class="tab-content">
+                    <div class="reports-layout">
+                        <div class="reports-sidebar grid-card">
+                            <div class="card-header">Audit & Governance Export</div>
+                            <div class="xai-text-block">
+                                Generate cryptographically signed threat audits detailing all detected anomalies, classification statistics, and PPO Reinforcement Learning mitigation event logs.
+                            </div>
+                            <div class="button-stack">
+                                <button id="export-csv-btn" class="btn btn-primary">Export CSV Security Audit</button>
+                                <button id="gen-pdf-btn" class="btn btn-secondary">Print PDF Threat Summary</button>
+                            </div>
+                        </div>
+
+                        <div class="reports-main grid-card">
+                            <div class="card-header">SecOps System Auditing Logs</div>
+                            <div class="audit-log-terminal" id="audit-log-terminal">
+                                <div class="terminal-line">[2026-07-13 19:35:30] Initializing AI Cyber Threat Detection SOC Console...</div>
+                                <div class="terminal-line">[2026-07-13 19:35:30] Autodetected LSTM Autoencoder Anomaly threshold: 0.05284</div>
+                                <div class="terminal-line">[2026-07-13 19:35:31] XGBoost Classifier models successfully parsed and audited.</div>
+                                <div class="terminal-line">[2026-07-13 19:35:31] Autonomous PPO Response agent loaded. Policies bound to local interfaces.</div>
+                                <div class="terminal-line green">[2026-07-13 19:35:31] SECURE CHANNEL LINKED - System in IDLE monitor state. Ready.</div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </main>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
