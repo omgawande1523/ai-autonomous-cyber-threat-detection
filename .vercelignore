@@ -1,0 +1,22 @@
+# Ignore docker files
+Dockerfile
+docker-compose.yml
+
+# Ignore Jupyter Notebooks and exploration code
+notebooks/
+polish_assets.py
+run_audit.py
+
+# Ignore assets/documentation mockups
+assets/
+
+# Ignore backend tests and local reports
+backend/tests/
+backend/reports/
+
+# Ignore local virtualenvs and cache
+.venv/
+backend/.venv/
+.pytest_cache/
+__pycache__/
+*.pyc
