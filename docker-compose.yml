@@ -5,7 +5,7 @@ services:
     build: .
     ports:
       - "8000:8000"
-    command: uvicorn api:app --host 0.0.0.0 --port 8000
+    command: uvicorn backend.api:app --host 0.0.0.0 --port 8000
     volumes:
       - .:/app
     environment:
@@ -15,7 +15,7 @@ services:
     build: .
     ports:
       - "8501:8501"
-    command: streamlit run app.py --server.port=8501 --server.address=0.0.0.0
+    command: streamlit run backend/app.py --server.port=8501 --server.address=0.0.0.0
     volumes:
       - .:/app
     environment:
