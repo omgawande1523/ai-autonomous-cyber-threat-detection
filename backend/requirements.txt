@@ -10,6 +10,8 @@ pyshark
 fastapi
 uvicorn
 shap
+numba>=0.59.0
+llvmlite>=0.42.0
 captum
 streamlit
 plotly
